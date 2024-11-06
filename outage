@@ -1,0 +1,57 @@
+% MATLAB code to plot WSR vs SNR with error variations for "With AO" and "Without AO"
+clc;
+clear;
+close all;
+
+% Parameters
+SNR_dB = 0:5:50; % SNR range in dB
+SNR = 10.^(SNR_dB/10); % Convert SNR from dB to linear scale
+N = 1e6; % Number of simulation runs
+
+% Error values
+errors = [0.2, 0.8];
+legends = {'With AO, Error=0.2', 'Without AO, Error=0.2', 'With AO, Error=0.8', 'Without AO, Error=0.8'};
+line_styles = {'-', '--'};
+markers = {'o', 's'};
+colors = {'b', 'm'}; % Colors for With AO and Without AO
+
+% Initialize storage for results
+wsr_with_ao = zeros(length(errors), length(SNR));
+wsr_without_ao = zeros(length(errors), length(SNR));
+
+% Loop through each error value
+for i = 1:length(errors)
+    error_val = errors(i);
+    
+    % WSR Calculation "With AO" (Analytical - replace with actual formula)
+    for j = 1:length(SNR)
+        % Placeholder analytical WSR formula for "With AO"
+        wsr_with_ao(i, j) = (1 - error_val) * log2(1 + error_val * SNR(j));
+    end
+    
+    % WSR Calculation "Without AO" (Analytical - replace with actual formula)
+    for j = 1:length(SNR)
+        % Placeholder analytical WSR formula for "Without AO"
+        wsr_without_ao(i, j) = (1 - error_val) * log2(1 + (1 - error_val) * SNR(j));
+    end
+end
+
+% Plotting
+figure;
+hold on;
+for i = 1:length(errors)
+    % "With AO" plot
+    plot(SNR_dB, wsr_with_ao(i, :), 'LineStyle', line_styles{1}, ...
+        'Color', colors{1}, 'Marker', markers{1}, 'DisplayName', legends{2*i-1}, 'LineWidth', 1.5);
+    
+    % "Without AO" plot
+    plot(SNR_dB, wsr_without_ao(i, :), 'LineStyle', line_styles{2}, ...
+        'Color', colors{2}, 'Marker', markers{2}, 'DisplayName', legends{2*i}, 'LineWidth', 1.5);
+end
+
+% Axis labels and legend
+xlabel('SNR (dB)');
+ylabel('WSR');
+legend('show', 'Location', 'NorthWest');
+grid on;
+title('WSR vs SNR with Different Error Levels');
